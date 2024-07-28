@@ -14,6 +14,7 @@ let isEraser = false;
 let currentSize = 2;
 let currentColor = '#000000';
 let canvasState = [];
+let socket;
 
 function initializeCanvas() {
     const container = canvas.parentElement;
@@ -30,11 +31,13 @@ function setCursor(type) {
 canvas.addEventListener('mousedown', (e) => {
     isDrawing = true;
     draw(e);
+    sendDrawEvent(e, 'mousedown');
 });
 
 canvas.addEventListener('mousemove', (e) => {
     if (isDrawing) {
         draw(e);
+        sendDrawEvent(e, 'mousemove');
     }
 });
 
@@ -42,6 +45,7 @@ canvas.addEventListener('mouseup', () => {
     isDrawing = false;
     ctx.beginPath();
     saveCanvasState();
+    sendDrawEvent(null, 'mouseup');
 });
 
 canvas.addEventListener('mouseleave', () => {
@@ -60,11 +64,13 @@ canvas.addEventListener('mouseenter', (e) => {
 canvas.addEventListener('touchstart', (e) => {
     isDrawing = true;
     drawTouch(e);
+    sendDrawEvent(e, 'touchstart');
 });
 
 canvas.addEventListener('touchmove', (e) => {
     if (isDrawing) {
         drawTouch(e);
+        sendDrawEvent(e, 'touchmove');
     }
 });
 
@@ -72,6 +78,7 @@ canvas.addEventListener('touchend', () => {
     isDrawing = false;
     ctx.beginPath();
     saveCanvasState();
+    sendDrawEvent(null, 'touchend');
 });
 
 canvas.addEventListener('touchcancel', () => {
@@ -84,6 +91,7 @@ sizeTabs.forEach((tab, index) => {
         currentSize = (index + 1) * 2; // Size 2, 4, 6, 8
         sizeTabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
+        sendSizeChangeEvent(currentSize);
     });
 });
 
@@ -98,6 +106,7 @@ colorButtons.forEach(button => {
         currentColor = button.style.backgroundColor;
         isEraser = false;
         setCursor('crosshair');
+        sendColorChangeEvent(currentColor);
     });
 });
 
@@ -109,6 +118,7 @@ clearButton.addEventListener('click', () => {
         } else {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+        sendClearEvent();
     }
 });
 
@@ -116,6 +126,7 @@ resetButton.addEventListener('click', () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     canvasState = [];
     saveCanvasToLocalStorage();
+    sendResetEvent();
 });
 
 saveButton.addEventListener('click', () => {
@@ -133,6 +144,7 @@ resizeButton.addEventListener('click', () => {
         canvas.height = newHeight;
         initializeCanvas();
         restoreCanvasState();
+        sendResizeEvent(newWidth, newHeight);
     }
 });
 
@@ -140,12 +152,14 @@ eraserButton.addEventListener('click', () => {
     isEraser = true;
     currentSize = 10;
     setCursor('url("eraser-icon.png"), auto'); // Change to an eraser cursor, use a custom eraser icon if available
+    sendEraserEvent(currentSize);
 });
 
 penPencil.addEventListener('click', () => {
     isEraser = false;
     currentSize = 2;
     setCursor('url("pencil-icon.png"), auto'); // Change to a pencil cursor, use a custom pencil icon if available
+    sendPenEvent(currentSize);
 });
 
 window.addEventListener('beforeunload', () => {
@@ -236,3 +250,200 @@ loadCanvasFromLocalStorage();
 if (canvasState.length === 0) {
     saveCanvasState();
 }
+
+// WebSocket setup
+function setupWebSocket() {
+    socket = new WebSocket('wss://task-2-real-time-collaborative-backend.onrender.com');
+    
+    socket.addEventListener('open', () => {
+        console.log('Connected to WebSocket');
+    });
+    
+    socket.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+        handleSocketMessage(data);
+    });
+
+    socket.addEventListener('close', () => {
+        console.log('Disconnected from WebSocket');
+    });
+}
+
+function sendDrawEvent(e, type) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+
+    socket.send(JSON.stringify({
+        type: 'draw',
+        x,
+        y,
+        size: currentSize,
+        color: isEraser ? 'white' : currentColor,
+        isEraser,
+        action: type
+    }));
+}
+
+function sendDrawTouchEvent(e, type) {
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (touch.clientX - rect.left) * scaleX;
+    const y = (touch.clientY - rect.top) * scaleY;
+
+    socket.send(JSON.stringify({
+        type: 'draw',
+        x,
+        y,
+        size: currentSize,
+        color: isEraser ? 'white' : currentColor,
+        isEraser,
+        action: type
+    }));
+}
+
+function sendClearEvent() {
+    socket.send(JSON.stringify({
+        type: 'clear'
+    }));
+}
+
+function sendResetEvent() {
+    socket.send(JSON.stringify({
+        type: 'reset'
+    }));
+}
+
+function sendResizeEvent(width, height) {
+    socket.send(JSON.stringify({
+        type: 'resize',
+        width,
+        height
+    }));
+}
+
+function sendSizeChangeEvent(size) {
+    socket.send(JSON.stringify({
+        type: 'sizeChange',
+        size
+    }));
+}
+
+function sendColorChangeEvent(color) {
+    socket.send(JSON.stringify({
+        type: 'colorChange',
+        color
+    }));
+}
+
+function sendEraserEvent(size) {
+    socket.send(JSON.stringify({
+        type: 'eraser',
+        size
+    }));
+}
+
+function sendPenEvent(size) {
+    socket.send(JSON.stringify({
+        type: 'pen',
+        size
+    }));
+}
+
+function handleSocketMessage(data) {
+    switch (data.type) {
+        case 'draw':
+            handleDraw(data);
+            break;
+        case 'clear':
+            handleClear();
+            break;
+        case 'reset':
+            handleReset();
+            break;
+        case 'resize':
+            handleResize(data);
+            break;
+        case 'sizeChange':
+            handleSizeChange(data);
+            break;
+        case 'colorChange':
+            handleColorChange(data);
+            break;
+        case 'eraser':
+            handleEraser(data);
+            break;
+        case 'pen':
+            handlePen(data);
+            break;
+    }
+}
+
+function handleDraw(data) {
+    ctx.lineWidth = data.size;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = data.color;
+
+    if (data.action === 'mousedown') {
+        ctx.beginPath();
+        ctx.moveTo(data.x, data.y);
+    } else if (data.action === 'mousemove') {
+        ctx.lineTo(data.x, data.y);
+        ctx.stroke();
+    } else if (data.action === 'mouseup') {
+        ctx.beginPath();
+    }
+}
+
+function handleClear() {
+    if (canvasState.length > 0) {
+        canvasState.pop();
+        if (canvasState.length > 0) {
+            restoreCanvasState();
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+}
+
+function handleReset() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvasState = [];
+    saveCanvasToLocalStorage();
+}
+
+function handleResize(data) {
+    canvas.width = data.width;
+    canvas.height = data.height;
+    initializeCanvas();
+    restoreCanvasState();
+}
+
+function handleSizeChange(data) {
+    currentSize = data.size;
+}
+
+function handleColorChange(data) {
+    currentColor = data.color;
+    isEraser = false;
+    setCursor('crosshair');
+}
+
+function handleEraser(data) {
+    isEraser = true;
+    currentSize = data.size;
+    setCursor('url("eraser-icon.png"), auto');
+}
+
+function handlePen(data) {
+    isEraser = false;
+    currentSize = data.size;
+    setCursor('url("pencil-icon.png"), auto');
+}
+
+// Initialize WebSocket connection
+setupWebSocket();
