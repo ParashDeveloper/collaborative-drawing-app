@@ -1,0 +1,192 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    padding: 1%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: aliceblue;
+    border-top: 1px solid lightgray;
+}
+.tools button{
+    background-color: aliceblue;
+}
+.bar {
+    background-color: aliceblue;
+    width: 100%;
+}
+.bar table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.bar td {
+    text-align: center;
+}
+
+.bar .clipboard {
+    width: 4%;
+}
+
+.bar .image {
+    width:3%; 
+}
+
+.bar .tools {
+    width: 2%; 
+}
+
+.bar .shapes {
+    width: 10%; 
+}
+
+.bar .colors {
+    width: 35%; 
+}
+.can {
+    width: 93%;
+    height: 100vh;
+    padding-top:2%;
+    padding-left:2%;
+    padding-right:5%;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.app {
+    width: 100%;
+    font-family: "Raleway";
+}
+
+td {
+    text-align: center;
+    font-size: 12px;
+}
+
+.table1 button {
+    width: 50px;
+}
+
+#btn1 {
+    background-color: rgb(32, 120, 178);
+    color: white;
+}
+
+#btn2 {
+    border-top: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    background: #f2f2f2;
+}
+
+.colors button, .table10 button, .table11 button {
+    width: 20px;
+    height: 20px;
+    border: 1px solid gray;
+}
+.colors button:hover, .table10 button:hover, .table11 button:hover,.tools button:hover {
+    border: 2px solid black;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+button {
+    background-color: white;
+    border: none;
+    width: 100%;
+}
+
+.clear, .reset, .save {
+    background-color: #f2f2f2;
+    width: 100%;
+}
+
+.actions {
+    padding-top: 10%;
+}
+
+.actions td:hover {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.size {
+    width: 50px;
+}
+
+.size td {
+    width: 50px;  
+}
+
+#size-tab1 {
+    width: 50px;
+    height: 2px;
+    border: 1px solid black;
+    background-color: black;
+}
+
+#size-tab2 {
+    width: 50px;
+    height: 5px;
+    border: 1px solid black;
+    background-color: black;
+}
+
+#size-tab3 {
+    width: 50px;
+    height: 8px;
+    border: 1px solid black;
+    background-color: black;
+}
+
+#size-tab4 {
+    width: 50px;
+    height: 10px;
+    border: 1px solid black;
+    background-color: black;
+}
+.size td:hover {
+    background-color: gray;
+}
+
+.size-tab.active {
+    background-color: gray;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .cana {
+        padding: 10px;
+    }
+
+    canvas {
+        height: 300px;
+    }
+
+    .actions {
+        padding-top: 5%;
+    }
+}
+.tool button{
+
+    background-color:aliceblue;
+  
+}
+.tool button:hover{
+    
+    border:2px solid black;
+    border-radius:50%;
+}
+

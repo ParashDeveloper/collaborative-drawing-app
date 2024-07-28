@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS Paint Clone App</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="app">
+        <div class="table1">
+            <table>
+                <tr>
+                    <td><button id="btn1">File</button></td>
+                    <td><button id="btn2">Home</button></td>
+                    <td><button>View</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="container">
+            <div class="table2">
+                <table>
+                    <tr>
+                        <td><img src="/icons/clipboard-outline-filled.png" width="30px" height="30px"></td>
+                    </tr>
+                    <tr>
+                        <td>Paste</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table3">
+                <table>
+                    <tr>
+                        <td><img src="icons/cutimages.png" width="20px" height="20px"></td>
+                        <td>cut</td>
+                    </tr>
+                    <tr>
+                        <td><img src="icons/copydownload.png" width="20px" height="20px"></td>
+                        <td>copy</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table4">
+                <table>
+                    <tr>
+                        <td><img src="icons/select.png" width="30px" height="30px"></td>
+                    </tr>
+                    <tr>
+                        <td>select</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table5">
+                <table>
+                    <tr>
+                        <td><img src="icons/cropimage.png" width="15px" height="15px"></td>
+                        <td>Crop</td>
+                    </tr>
+                    <tr>
+                        <td><img src="icons/resize.png" width="15px" height="15px"></td>
+                        <td>Resize</td>
+                    </tr>
+                    <tr>
+                        <td><img src="icons/rotate.png" width="15px" height="15px"></td>
+                        <td>Rotate</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table class="tool">
+                    <tr>
+                        <td>
+                            <button class="pen-pencil" name="pen-type"><i class="fa fa-pencil" style="color:rgb(193, 189, 68)"></i>
+                           </label>
+                        </td>
+                        <td><button><img src="icons/colorbucket.png" width="15px" height="13px"></button></td>
+                        <td><button>A</button></td>
+                    </tr>
+                    <tr>
+                        <td><button><i class="fa fa-eraser" id="eraser" style="color:burlywood"></i></button></td>
+                        <td><button><i class="fa fa-eyedropper" style="color: blue;"></i></button></td>
+                        <td><button><i class="fa fa-search" style="color:brown"></i></button></td>
+
+                    </tr>
+                </table>
+            </div>
+            <div class="table6">
+                <table>
+                    <tr>
+                        <td><img src="icons/airbrush.png" width="30px" height="30px"></td>
+                    </tr>
+                    <tr>
+                        <td>brushes</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table7">
+                <table>
+                    <tr>
+                        <td rowspan="4"><img src="icons/shapes.png"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="size">
+                <table>
+                    <tr id="size-tab1"><td></td></tr>
+                    <tr id="size-tab2"><td></td></tr>
+                    <tr id="size-tab3"><td></td></tr>
+                    <tr id="size-tab4"><td></td></tr>
+                    <tr>
+                        <td>size</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="bgcolor">
+                <table>
+                    <tr>
+                        <td><button style="background-color: black; height: 30px;width:30px"></button></td>
+                    </tr>
+                    <tr><td>color1</td></tr>
+                </table>
+            </div>
+            <div class="table11">
+                <table>
+                    <tr>
+                        <td><button style="background-color: white; height: 30px;width:30px"></button></td>
+                    </tr>
+                    <tr><td>color2</td></tr>
+                </table>
+            </div>
+            <div class="table12">
+                <table class="colors">
+                    <tr>
+                        <td><button style="background-color: black;"></button></td>
+                        <td><button style="background-color: gray;"></button></td>
+                        <td><button style="background-color: brown;"></button></td>
+                        <td><button style="background-color: red;"></button></td>
+                        <td><button style="background-color: orange;"></button></td>
+                        <td><button style="background-color: yellow;"></button></td>
+                        <td><button style="background-color: green;"></button></td>
+                        <td><button style="background-color: blue;"></button></td>
+                        <td><button style="background-color: darkblue;"></button></td>
+                        <td><button style="background-color: purple;"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: lightgray;"></button></td>
+                        <td><button style="background-color: darksalmon;"></button></td>
+                        <td><button style="background-color: pink;"></button></td>
+                        <td><button style="background-color: goldenrod;"></button></td>
+                        <td><button style="background-color: #ddd;"></button></td>
+                        <td><button style="background-color: lightgreen;"></button></td>
+                        <td><button style="background-color: lightblue;"></button></td>
+                        <td><button style="background-color: blueviolet;"></button></td>
+                        <td><button style="background-color: coral;"></button></td>
+                    </tr>
+                    <tr>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                        <td><button style="background-color: white;"></button></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table13">
+                <table>
+                    <tr>
+                        <td><img src="icons/editcolor.png" width="30px" height="30px"></td>
+                    </tr>
+                    <tr>
+                        <td>edit colors</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="table14">
+                <table>
+                    <tr>
+                        <td><img src="icons/jdpaint.jpeg" width="30px" height="30px"></td>
+                    </tr>
+                    <tr>
+                        <td>Edit with paint JD</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table class="actions">
+                    <tr>
+                        <td class="clear"><button id="clear">Undo</button></td>
+                    </tr>
+                    <tr>
+                        <td class="reset"><button id="reset">Reset</button></td>
+                    </tr>
+                    <tr>
+                        <td class="save"><button id="save">Save</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="bar">
+            <table>
+                <tr>
+                    <td class="clipboard">Clipboard</td>
+                    <td class="image">Image</td>
+                    <td class="tools">Tools</td>
+                    <td class="shapes">Shapes</td>
+                    <td class="colors">Colors</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="can">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    
+       
+        <div>
+            <table class="background">
+                <tr>
+                    <td><button id="resize"></button></td>
+                </tr>
+            </table>
+        </div>
+   
+    <script src="index.js"></script>
+
+</body>
+</html>
